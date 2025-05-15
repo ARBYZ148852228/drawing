@@ -8,7 +8,7 @@ pygame.display.set_caption('рисовалка')
 
 background_color = (255, 255, 255)
 FPS = 60
-size = 50  # размер ячейки палитры
+size = 50  
 brush_color = (0, 0, 0)
 brush_width = 30
 border_color = (0, 0, 0)
@@ -27,7 +27,7 @@ pallete.fill(background_color)
 dragging_pallete = False
 offset = (0, 0)
 
-# Для рисования прямоугольников правой кнопкой
+
 rect_start = None
 rect_current = None
 rects = []
@@ -50,22 +50,22 @@ while running:
             running = False
 
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:  # Левая кнопка
+            if event.button == 1:  
                 if pallete_rect.collidepoint(event.pos):
                     selected_color_index = (event.pos[0] - pallete_rect.left) // size
                     CUR_INDEX = selected_color_index
                     brush_color = COLORS[CUR_INDEX]
                 else:
-                    # Начинаем рисовать кружочки
+                   
                     pygame.draw.circle(canvas, brush_color, event.pos, brush_width)
 
             elif event.button == 3:  # Правая кнопка
                 if pallete_rect.collidepoint(event.pos):
-                    # Начинаем перетаскивать палитру
+                  
                     dragging_pallete = True
                     offset = (event.pos[0] - pallete_rect.left, event.pos[1] - pallete_rect.top)
                 else:
-                    # Начинаем рисовать прямоугольник
+        
                     rect_start = event.pos
                     rect_current = event.pos
 
@@ -74,7 +74,7 @@ while running:
                 if dragging_pallete:
                     dragging_pallete = False
                 elif rect_start:
-                    # Фиксируем прямоугольник если больше 5x5
+                   
                     x1, y1 = rect_start
                     x2, y2 = rect_current
                     rect_w = abs(x2 - x1)
@@ -92,19 +92,19 @@ while running:
             if rect_start:
                 rect_current = mouse_pos
 
-    # Если левая кнопка удерживается и курсор не на палитре — рисуем кружочки
+   
     if mouse_pressed[0] and not pallete_rect.collidepoint(mouse_pos):
         pygame.draw.circle(canvas, brush_color, mouse_pos, brush_width)
 
-    # Отрисовка
+    
     screen.fill(background_color)
     screen.blit(canvas, (0, 0))
 
-    # Рисуем все сохранённые прямоугольники
+  
     for r, color in rects:
         pygame.draw.rect(screen, color, r, width=2)
 
-    # Если рисуем прямоугольник - показываем текущий контур
+    
     if rect_start and rect_current:
         x1, y1 = rect_start
         x2, y2 = rect_current
@@ -113,7 +113,7 @@ while running:
         rect = pygame.Rect(min(x1, x2), min(y1, y2), rect_w, rect_h)
         pygame.draw.rect(screen, brush_color, rect, width=2)
 
-    # Рисуем палитру
+ 
     draw_pallate()
 
     pygame.display.flip()
